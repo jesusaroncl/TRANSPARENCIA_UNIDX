@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Transparencia – Universidad Interamericana para el Desarrollo</title>
+  <style>
+    /* ---------  PALETA Y VARIABLES  --------- */
+    :root{
+      --c-primary:#3b82f6;           /* azul principal */
+      --c-primary-dark:#1e40af;      /* azul oscuro */
+      --c-primary-light:rgba(59, 130, 246, 0.1);
+      --c-accent:#06b6d4;            /* cian para acentos */
+      --c-bg:#0f172a;                /* fondo principal */
+      --c-surface:#1e293b;           /* superficie */
+      --c-text:#f8fafc;              /* texto principal */
+      --c-card-bg:rgba(30, 41, 59, 0.95);
+      --c-muted:#94a3b8;             /* texto secundario */
+      --c-border:rgba(51, 65, 85, 0.3);
+      --shadow:0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --card-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --radius:16px;
+      --transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --content-width: 900px;
+    }
+
+    /* ---------  RESET BÁSICO  --------- */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background: linear-gradient(135deg, var(--c-bg) 0%, #1e293b 100%);
+      color:var(--c-text); line-height:1.6;
+      display:flex; flex-direction:column; min-height:100vh;
+      font-size:16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Partículas flotantes */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent);
+      border-radius: 50%;
+      animation: float 25s infinite linear;
+    }
+    
+    .particle:nth-child(1) { width: 2px; height: 2px; left: 5%; animation-delay: 0s; }
+    .particle:nth-child(2) { width: 3px; height: 3px; left: 15%; animation-delay: 3s; }
+    .particle:nth-child(3) { width: 1px; height: 1px; left: 25%; animation-delay: 6s; }
+    .particle:nth-child(4) { width: 2px; height: 2px; left: 35%; animation-delay: 9s; }
+    .particle:nth-child(5) { width: 3px; height: 3px; left: 45%; animation-delay: 12s; }
+    .particle:nth-child(6) { width: 2px; height: 2px; left: 55%; animation-delay: 15s; }
+    .particle:nth-child(7) { width: 1px; height: 1px; left: 65%; animation-delay: 18s; }
+    .particle:nth-child(8) { width: 3px; height: 3px; left: 75%; animation-delay: 21s; }
+    .particle:nth-child(9) { width: 2px; height: 2px; left: 85%; animation-delay: 24s; }
+    .particle:nth-child(10) { width: 1px; height: 1px; left: 95%; animation-delay: 27s; }
+    .particle:nth-child(11) { width: 2px; height: 2px; left: 10%; animation-delay: 30s; }
+    .particle:nth-child(12) { width: 3px; height: 3px; left: 20%; animation-delay: 33s; }
+    .particle:nth-child(13) { width: 1px; height: 1px; left: 30%; animation-delay: 36s; }
+    .particle:nth-child(14) { width: 2px; height: 2px; left: 40%; animation-delay: 39s; }
+    .particle:nth-child(15) { width: 3px; height: 3px; left: 50%; animation-delay: 42s; }
+    .particle:nth-child(16) { width: 2px; height: 2px; left: 60%; animation-delay: 45s; }
+    .particle:nth-child(17) { width: 1px; height: 1px; left: 70%; animation-delay: 48s; }
+    .particle:nth-child(18) { width: 3px; height: 3px; left: 80%; animation-delay: 51s; }
+    .particle:nth-child(19) { width: 2px; height: 2px; left: 90%; animation-delay: 54s; }
+    .particle:nth-child(20) { width: 1px; height: 1px; left: 8%; animation-delay: 57s; }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-50px) scale(1);
+        opacity: 0;
+      }
+    }
+    
+    a{color:var(--c-primary); text-decoration:none; transition:var(--transition)}
+    a:hover{color:var(--c-primary-dark);}
+    a:focus-visible {
+      outline: 2px solid var(--c-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ---------  CONTENEDOR  --------- */
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    .content-container {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
+
+    /* ---------  BARRA SUPERIOR  --------- */
+    .top-bar {
+      background: rgba(12, 20, 38, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--c-border);
+      transition: var(--transition);
+      position: relative;
+      z-index: 100;
+    }
+    
+    .top-bar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    .navbar-logo {
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3));
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .navbar-logo:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 4px 12px rgba(59, 130, 246, 0.5));
+    }
+    
+    .navbar-title {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-left: 1rem;
+      overflow: hidden;
+      width: 0;
+      white-space: nowrap;
+      transition: width 0.6s ease-in-out;
+      opacity: 0;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .navbar-left:hover .navbar-title {
+      width: 400px;
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-left:hover .navbar-title {
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar-left:hover .navbar-title {
+        width: 200px;
+      }
+    }
+
+    .navbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Toggle de idioma */
+    .language-selector {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-right: 1rem;
+    }
+    
+    .language-select {
+      background: var(--c-card-bg);
+      border: 1px solid var(--c-border);
+      border-radius: 8px;
+      color: var(--c-text);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: var(--transition);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 12px;
+      padding-right: 2rem;
+      min-width: 80px;
+    }
+    
+    .language-select:hover {
+      border-color: var(--c-primary);
+    }
+    
+    .language-select:focus {
+      outline: none;
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Toggle de tema */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 26px;
+      cursor: pointer;
+    }
+    
+    .theme-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    
+    .theme-toggle-track {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 26px;
+      background-color: var(--c-card-bg);
+      border: 1px solid var(--c-border);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: var(--transition);
+      padding: 3px;
+    }
+    
+    .theme-toggle-indicator {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--c-primary);
+      border-radius: 50%;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(0);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    .theme-toggle input:checked + .theme-toggle-track .theme-toggle-indicator {
+      transform: translateX(26px);
+      background-color: #f59e0b;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+    
+    .theme-toggle input:checked + .theme-toggle-track {
+      background-color: #374151;
+      border-color: #4b5563;
+    }
+    
+    .theme-toggle svg {
+      width: 12px;
+      height: 12px;
+      color: white;
+    }
+    
+    /* Ícono del sol y la luna */
+    .theme-toggle-track::before,
+    .theme-toggle-track::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 5px;
+      background-size: contain;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+    
+    .theme-toggle-track::before {
+      left: 7px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23f1f5f9' viewBox='0 0 16 16'%3E%3Cpath d='M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z'/%3E%3C/svg%3E");
+    }
+    
+    .theme-toggle-track::after {
+      right: 7px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23f59e0b' viewBox='0 0 16 16'%3E%3Cpath d='M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z'/%3E%3C/svg%3E");
+    }
+    
+    /* Modo claro */
+    .dark-mode {
+      --c-primary:#3b82f6;
+      --c-primary-dark:#1e40af;
+      --c-primary-light:rgba(59, 130, 246, 0.08);
+      --c-accent:#0891b2;
+      --c-bg:#ffffff;
+      --c-surface:#f8fafc;
+      --c-text:#0f172a;
+      --c-card-bg:#ffffff;
+      --c-muted:#64748b;
+      --c-border:rgba(226, 232, 240, 0.8);
+      --shadow:0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      --card-shadow:0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .dark-mode body {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    }
+
+    .dark-mode .particles .particle {
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent);
+    }
+
+    /* ---------  CARRUSEL MODERNO  --------- */
+    .carousel-container {
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      margin-bottom: 4rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: scale(1.1);
+      transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .carousel-slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7);
+      transition: var(--transition);
+    }
+    
+    .carousel-slide.active img {
+      filter: brightness(0.8);
+    }
+    
+    .carousel-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, 
+        rgba(15, 23, 42, 0.9) 0%, 
+        rgba(15, 23, 42, 0.6) 50%, 
+        transparent 100%);
+      padding: 3rem 2rem 2rem;
+      color: var(--c-text);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.6s ease-out;
+    }
+    
+    .carousel-slide.active .carousel-overlay {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .carousel-overlay h2 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      border: none;
+      padding: 0;
+      background: linear-gradient(135deg, #ffffff 0%, var(--c-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .carousel-overlay p {
+      font-size: 1.125rem;
+      color: rgba(248, 250, 252, 0.9);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    
+    .carousel-indicators {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.75rem;
+      z-index: 10;
+    }
+    
+    .carousel-indicator {
+      width: 3px;
+      height: 20px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .carousel-indicator::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--c-primary), var(--c-accent));
+      transition: height 0.3s ease;
+    }
+    
+    .carousel-indicator.active::before {
+      height: 100%;
+    }
+    
+    .carousel-indicator:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(1.1);
+    }
+    
+    /* Navegación del carrusel */
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--c-border);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 10;
+      opacity: 0;
+    }
+    
+    .carousel-container:hover .carousel-nav {
+      opacity: 1;
+    }
+    
+    .carousel-nav:hover {
+      background: var(--c-primary);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+    
+    .carousel-nav-prev {
+      left: 1.5rem;
+    }
+    
+    .carousel-nav-next {
+      right: 1.5rem;
+    }
+    
+    .carousel-nav svg {
+      width: 20px;
+      height: 20px;
+      color: var(--c-text);
+    }
+
+    /* ---------  ENCABEZADO  --------- */
+    .header {
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+    }
+    .page-title {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .page-title h1 {
+      background: linear-gradient(135deg, var(--c-text) 0%, var(--c-primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+    }
+    .page-title small {
+      display: block;
+      font-weight: normal;
+      color: var(--c-muted);
+      font-size: 1.2rem;
+      margin-top: .5rem;
+    }
+
+    /* ---------  CUADRÍCULA DE TARJETAS  --------- */
+    .grid{
+      display:grid;
+      gap:2rem; 
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      margin-bottom: 4rem;
+    }
+    .card{
+      background:var(--c-card-bg); 
+      backdrop-filter: blur(20px);
+      border-radius:var(--radius);
+      box-shadow:var(--card-shadow); 
+      text-align:center;
+      padding:2rem 1.5rem;
+      border: 1px solid var(--c-border);
+      transition:var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      transition: var(--transition);
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c-primary), var(--c-primary-dark));
+      transform: scaleX(0);
+      transition: var(--transition);
+      transform-origin: center;
+    }
+    .card:hover{
+      transform:translateY(-8px); 
+      box-shadow:var(--shadow);
+      border-color: var(--c-primary);
+    }
+    .card:hover::before {
+      left: 100%;
+    }
+    .card:hover::after {
+      transform: scaleX(1);
+    }
+    .card small{
+      font-size:.95rem; 
+      display:block; 
+      margin-top:.75rem; 
+      color:var(--c-muted);
+    }
+    .card-icon {
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      transition: var(--transition);
+    }
+    .card:hover .card-icon {
+      transform: scale(1.15);
+      opacity: 1;
+      filter: drop-shadow(0 4px 12px rgba(59, 130, 246, 0.4));
+    }
+
+    /* ---------  PÁGINA DE DETALLE  --------- */
+    .detail-section {
+      padding: 1rem 0 4rem;
+    }
+    .back{
+      display:inline-flex; 
+      align-items:center; 
+      margin:1.5rem 0 2.5rem; 
+      color: var(--c-muted);
+      transition: var(--transition);
+      padding: .75rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--c-border);
+      background: var(--c-card-bg);
+      backdrop-filter: blur(10px);
+    }
+    .back:hover {
+      color: var(--c-primary-dark);
+      background: var(--c-primary-light);
+      border-color: var(--c-primary);
+      transform: translateX(-4px);
+    }
+    .back svg {
+      margin-right: .5rem;
+      transition: transform 0.2s;
+    }
+    .back:hover svg {
+      transform: translateX(-2px);
+    }
+    
+    .list-links{
+      display:flex; 
+      flex-direction:column; 
+      gap:1rem; 
+      margin:1.5rem 0 2.5rem;
+    }
+    .pdf-link{
+      display:flex; 
+      align-items:center; 
+      gap:1rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius);
+      background: var(--c-primary-light);
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+      color: var(--c-text);
+      border: 1px solid var(--c-border);
+    }
+    .pdf-link:hover{
+      background: var(--c-card-bg);
+      color: var(--c-primary);
+      border-color: var(--c-primary);
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow);
+    }
+    .pdf-link img{
+      width:24px; 
+      opacity:.8;
+      transition: var(--transition);
+    }
+    .pdf-link:hover img {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* ---------  FOOTER  --------- */
+    footer{
+      margin-top:auto; 
+      padding:2.5rem 0;
+      text-align:center; 
+      font-size:.9rem; 
+      color:var(--c-muted);
+      border-top: 1px solid var(--c-border);
+      background: rgba(15, 23, 42, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .dark-mode footer {
+      background: rgba(248, 250, 252, 0.8);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--c-border);
+    }
+
+    /* ---------  UTILIDADES JS (estilos in-line toggled) --------- */
+    .hidden{display:none!important}
+    
+    /* Animación de carga para transiciones SPA */
+    .page-transition {
+      opacity: 0;
+      transform: translateY(15px);
+      animation: pageEnter 0.4s forwards;
+    }
+    @keyframes pageEnter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .header {
+        padding: 1.5rem 0;
+      }
+      .page-title {
+        margin: 1.5rem 0 2.5rem;
+      }
+      
+      .navbar-logo {
+        height: 32px;
+      }
+      
+      .navbar-title {
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+      }
+      
+      .top-bar-container {
+        justify-content: space-between;
+      }
+      
+      .carousel-container {
+        height: 300px;
+        margin-bottom: 2rem;
+      }
+      
+      .carousel-overlay {
+        padding: 2rem 1rem 1.5rem;
+      }
+      
+      .carousel-overlay h2 {
+        font-size: 1.5rem;
+      }
+      
+      .carousel-overlay p {
+        font-size: 1rem;
+      }
+      
+      .page-title h1 {
+        font-size: 2rem;
+      }
+      
+      .carousel-nav {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .carousel-nav svg {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .carousel-nav-prev {
+        left: 1rem;
+      }
+      
+      .carousel-nav-next {
+        right: 1rem;
+      }
+    }
+
+    /* Modo claro automático */
+    @media (prefers-color-scheme: dark) {
+      .dark-mode-auto {
+        --c-primary: #3b82f6;
+        --c-primary-dark: #1d4ed8;
+        --c-primary-light: rgba(59, 130, 246, 0.15);
+        --c-bg: #0c1426;
+        --c-text: #f1f5f9;
+        --c-card-bg: rgba(30, 41, 59, 0.8);
+        --c-muted: #94a3b8;
+        --c-border: rgba(51, 65, 85, 0.6);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Partículas flotantes -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- =======  BARRA SUPERIOR CON LOGO  ======= -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-container">
+        <div class="navbar-left">
+          <img src="img/logo-unid.png" class="navbar-logo" alt="Logo UNID">
+          <span class="navbar-title" data-es="Universidad Interamericana para el Desarrollo" data-en="Inter-American University for Development">Universidad Interamericana para el Desarrollo</span>
+        </div>
+        
+        <div class="navbar-controls">
+          <!-- Selector de idioma -->
+          <div class="language-selector">
+            <select id="language-select" class="language-select" aria-label="Seleccionar idioma">
+              <option value="es">🇪🇸 ES</option>
+              <option value="en">🇺🇸 EN</option>
+            </select>
+          </div>
+          
+          <!-- Toggle tema claro/oscuro -->
+          <label class="theme-toggle" for="theme-toggle" aria-label="Cambiar entre modo claro y oscuro">
+            <input type="checkbox" id="theme-toggle">
+            <div class="theme-toggle-track">
+              <div class="theme-toggle-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="sun-icon">
+                  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                  <path d="M8 0a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1zM8 13a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zM0 8a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1zM13 8a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1z"/>
+                </svg>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======  CARRUSEL DE PORTADA  ======= -->
+  <div class="carousel-container">
+    <div class="carousel">
+      <div class="carousel-slide active">
+        <img src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1600&auto=format&fit=crop" alt="Campus UNID">
+        <div class="carousel-overlay">
+          <h2 data-es="Campus Universitario" data-en="University Campus">Campus Universitario</h2>
+          <p data-es="Espacios modernos diseñados para fomentar la excelencia académica y el desarrollo integral de nuestros estudiantes en un ambiente de vanguardia tecnológica." data-en="Modern spaces designed to foster academic excellence and comprehensive development of our students in a cutting-edge technological environment.">Espacios modernos diseñados para fomentar la excelencia académica y el desarrollo integral de nuestros estudiantes en un ambiente de vanguardia tecnológica.</p>
+        </div>
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1600&auto=format&fit=crop" alt="Biblioteca UNID">
+        <div class="carousel-overlay">
+          <h2 data-es="Biblioteca Digital" data-en="Digital Library">Biblioteca Digital</h2>
+          <p data-es="Centro de recursos académicos con acceso a bases de datos internacionales, espacios colaborativos y tecnología de última generación para el aprendizaje." data-en="Academic resource center with access to international databases, collaborative spaces and cutting-edge technology for learning.">Centro de recursos académicos con acceso a bases de datos internacionales, espacios colaborativos y tecnología de última generación para el aprendizaje.</p>
+        </div>
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1600&auto=format&fit=crop" alt="Aulas UNID">
+        <div class="carousel-overlay">
+          <h2 data-es="Aulas Inteligentes" data-en="Smart Classrooms">Aulas Inteligentes</h2>
+          <p data-es="Infraestructura educativa equipada con sistemas multimedia interactivos, conectividad avanzada y herramientas pedagógicas innovadoras." data-en="Educational infrastructure equipped with interactive multimedia systems, advanced connectivity and innovative pedagogical tools.">Infraestructura educativa equipada con sistemas multimedia interactivos, conectividad avanzada y herramientas pedagógicas innovadoras.</p>
+        </div>
+      </div>
+      
+      <div class="carousel-slide">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1600&auto=format&fit=crop" alt="Laboratorios UNID">
+        <div class="carousel-overlay">
+          <h2 data-es="Laboratorios de Investigación" data-en="Research Laboratories">Laboratorios de Investigación</h2>
+          <p data-es="Espacios especializados con equipamiento científico de vanguardia para la investigación aplicada y el desarrollo de proyectos innovadores." data-en="Specialized spaces with cutting-edge scientific equipment for applied research and development of innovative projects.">Espacios especializados con equipamiento científico de vanguardia para la investigación aplicada y el desarrollo de proyectos innovadores.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navegación -->
+    <div class="carousel-nav carousel-nav-prev">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </div>
+    
+    <div class="carousel-nav carousel-nav-next">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
+    
+    <div class="carousel-indicators">
+      <div class="carousel-indicator active" data-slide="0"></div>
+      <div class="carousel-indicator" data-slide="1"></div>
+      <div class="carousel-indicator" data-slide="2"></div>
+      <div class="carousel-indicator" data-slide="3"></div>
+    </div>
+  </div>
+
+  <!-- =======  ENCABEZADO  ======= -->
+  <header id="main-header" class="header">
+    <div class="container">
+      <div class="page-title">
+        <h1 data-es="Portal de Transparencia" data-en="Transparency Portal">Portal de Transparencia</h1>
+        <small data-es="Acceso a información institucional pública de la UNID" data-en="Access to UNID public institutional information">Acceso a información institucional pública de la UNID</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- =======  HOME (grid)  ======= -->
+  <main id="home" class="container page-transition">
+    <section class="grid">
+      <a href="#detalle1" class="card" aria-label="Documentos Institucionales">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/document.png" class="card-icon" alt="">
+        <span data-es="Documentos Institucionales" data-en="Institutional Documents">Documentos Institucionales</span>
+        <small data-es="Estatuto, Reglamentos y Plan Estratégico" data-en="Statute, Regulations and Strategic Plan">Estatuto, Reglamentos y Plan Estratégico</small>
+      </a>
+
+      <a href="#detalle2" class="card" aria-label="Actas y Resoluciones">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/certificate.png" class="card-icon" alt="">
+        <span data-es="Actas y Resoluciones" data-en="Minutes and Resolutions">Actas y Resoluciones</span>
+        <small data-es="Disposiciones oficiales" data-en="Official provisions">Disposiciones oficiales</small>
+      </a>
+
+      <a href="#detalle3" class="card" aria-label="Información Financiera">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/bar-chart.png" class="card-icon" alt="">
+        <span data-es="Información Financiera" data-en="Financial Information">Información Financiera</span>
+        <small data-es="Estados financieros auditados" data-en="Audited financial statements">Estados financieros auditados</small>
+      </a>
+
+      <a href="#detalle4" class="card" aria-label="Becas y Créditos">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/graduation-cap.png" class="card-icon" alt="">
+        <span data-es="Becas y Créditos" data-en="Scholarships and Credits">Becas y Créditos</span>
+        <small data-es="Programas de apoyo estudiantil" data-en="Student support programs">Programas de apoyo estudiantil</small>
+      </a>
+
+      <a href="#detalle5" class="card" aria-label="Investigación">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/microscope.png" class="card-icon" alt="">
+        <span data-es="Investigación" data-en="Research">Investigación</span>
+        <small data-es="Proyectos y publicaciones científicas" data-en="Scientific projects and publications">Proyectos y publicaciones científicas</small>
+      </a>
+
+      <a href="#detalle6" class="card" aria-label="Tarifas Académicas">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/money.png" class="card-icon" alt="">
+        <span data-es="Tarifas Académicas" data-en="Academic Rates">Tarifas Académicas</span>
+        <small data-es="Costos y tasas vigentes" data-en="Current costs and rates">Costos y tasas vigentes</small>
+      </a>
+
+      <a href="#detalle7" class="card" aria-label="Admisión">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/conference.png" class="card-icon" alt="">
+        <span data-es="Admisión" data-en="Admission">Admisión</span>
+        <small data-es="Postulantes y matriculados" data-en="Applicants and enrolled students">Postulantes y matriculados</small>
+      </a>
+
+      <a href="#detalle8" class="card" aria-label="Plana Docente">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/teacher.png" class="card-icon" alt="">
+        <span data-es="Plana Docente" data-en="Faculty">Plana Docente</span>
+        <small data-es="Información académica" data-en="Academic information">Información académica</small>
+      </a>
+
+      <a href="#detalle9" class="card" aria-label="Normativa Interna">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/scales.png" class="card-icon" alt="">
+        <span data-es="Normativa Interna" data-en="Internal Regulations">Normativa Interna</span>
+        <small data-es="Reglamentos y procedimientos" data-en="Regulations and procedures">Reglamentos y procedimientos</small>
+      </a>
+    </section>
+  </main>
+
+  <!-- =======  PÁGINA DE DETALLE (ejemplo único)  ======= -->
+  <section id="detalle1" class="hidden page-transition">
+    <div class="container">
+      <div class="content-container">
+        <a href="#home" class="back" aria-label="Volver al inicio">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+          </svg>
+          <span data-es="Volver al inicio" data-en="Back to home">Volver al inicio</span>
+        </a>
+        
+        <div class="page-title">
+          <h1 data-es="Documentos Institucionales" data-en="Institutional Documents">Documentos Institucionales</h1>
+          <small data-es="Normativa básica y lineamientos estratégicos" data-en="Basic regulations and strategic guidelines">Normativa básica y lineamientos estratégicos</small>
+        </div>
+
+        <h2 data-es="Estatutos" data-en="Statutes">Estatutos</h2>
+        <div class="list-links">
+          <a class="pdf-link" href="#" aria-label="Descargar Estatuto Universitario (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Estatuto Universitario
+          </a>
+          <a class="pdf-link" href="#" aria-label="Descargar Estatuto Social (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Estatuto Social (escritura pública)
+          </a>
+          <a class="pdf-link" href="#" aria-label="Descargar Certificado literal de registro (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Certificado literal de registro
+          </a>
+        </div>
+
+        <h2 data-es="Reglamento General" data-en="General Regulations">Reglamento General</h2>
+        <div class="list-links">
+          <a class="pdf-link" href="#" aria-label="Descargar Reglamento General de la Universidad (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Reglamento General de la Universidad
+          </a>
+          <a class="pdf-link" href="#" aria-label="Descargar Manual de Procedimientos Académicos (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Manual de Procedimientos Académicos
+          </a>
+        </div>
+
+        <h2 data-es="Plan Estratégico Institucional" data-en="Institutional Strategic Plan">Plan Estratégico Institucional</h2>
+        <div class="list-links">
+          <a class="pdf-link" href="#" aria-label="Descargar Plan Estratégico Institucional 2023-2027 (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Plan Estratégico Institucional 2023-2027
+          </a>
+          <a class="pdf-link" href="#" aria-label="Descargar Memoria Anual 2023 (PDF)">
+            <img src="https://img.icons8.com/ios-glyphs/40/3b82f6/pdf.png" alt="Icono PDF"> 
+            Memoria Anual 2023
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======  FOOTER  ======= -->
+  <footer>
+    <div class="container">
+      <span data-es="Universidad Interamericana para el Desarrollo – Portal de Transparencia © 2025 | Todos los derechos reservados" data-en="Inter-American University for Development – Transparency Portal © 2025 | All rights reserved">Universidad Interamericana para el Desarrollo – Portal de Transparencia © 2025 | Todos los derechos reservados</span>
+    </div>
+  </footer>
+
+  <script>
+    /* --- Carrusel de imágenes mejorado --- */
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    const navPrev = document.querySelector('.carousel-nav-prev');
+    const navNext = document.querySelector('.carousel-nav-next');
+    const totalSlides = slides.length;
+    let autoSlideInterval;
+
+    function showSlide(index) {
+      // Ocultar todas las slides
+      slides.forEach(slide => slide.classList.remove('active'));
+      indicators.forEach(indicator => indicator.classList.remove('active'));
+      
+      // Mostrar slide actual
+      slides[index].classList.add('active');
+      indicators[index].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      showSlide(currentSlide);
+    }
+
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 6000);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlideInterval);
+    }
+
+    // Inicializar auto-avance
+    startAutoSlide();
+
+    // Pausar en hover
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+    carouselContainer.addEventListener('mouseleave', startAutoSlide);
+
+    // Navegación manual
+    navNext.addEventListener('click', () => {
+      stopAutoSlide();
+      nextSlide();
+      startAutoSlide();
+    });
+
+    navPrev.addEventListener('click', () => {
+      stopAutoSlide();
+      prevSlide();
+      startAutoSlide();
+    });
+
+    // Click en indicadores
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        stopAutoSlide();
+        currentSlide = index;
+        showSlide(currentSlide);
+        startAutoSlide();
+      });
+    });
+
+    /* --- Navegación SPA sencilla (hash-based) con transición --- */
+    const routes = ['home','detalle1','detalle2','detalle3','detalle4','detalle5','detalle6','detalle7','detalle8','detalle9'];
+    const mainHeader = document.getElementById('main-header');
+    
+    function render(){
+      const currentHash = location.hash.replace('#','');
+      const isHome = currentHash === '' || currentHash === 'home';
+      
+      routes.forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) {
+          const isActive = currentHash === id || (currentHash === '' && id === 'home');
+          el.classList.toggle('hidden', !isActive);
+          
+          // Aplicar animación de entrada cuando se muestra
+          if (isActive) {
+            el.classList.add('page-transition');
+            // Forzar reflow para reiniciar la animación
+            void el.offsetWidth;
+          }
+        }
+      });
+      
+      // Ocultar/mostrar el header principal
+      if (mainHeader) {
+        mainHeader.classList.toggle('hidden', !isHome);
+      }
+      
+      // Desplazar al inicio cuando cambia la página
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener('hashchange',render);
+    render();
+
+    /* --- Funcionalidad del selector de idioma --- */
+    const languageSelect = document.getElementById('language-select');
+    let currentLanguage = 'es'; // Idioma predeterminado
+
+    const translations = {
+      es: {
+        'theme-toggle-label': 'Cambiar entre modo claro y oscuro',
+        'language-select-label': 'Seleccionar idioma'
+      },
+      en: {
+        'theme-toggle-label': 'Toggle between light and dark mode',
+        'language-select-label': 'Select language'
+      }
+    };
+
+    function changeLanguage(lang) {
+      currentLanguage = lang;
+      
+      // Cambiar todos los elementos con atributos data-es y data-en
+      document.querySelectorAll('[data-es][data-en]').forEach(element => {
+        if (lang === 'es') {
+          element.textContent = element.getAttribute('data-es');
+        } else {
+          element.textContent = element.getAttribute('data-en');
+        }
+      });
+      
+      // Actualizar etiquetas aria-label
+      document.querySelector('.theme-toggle').setAttribute('aria-label', translations[lang]['theme-toggle-label']);
+      document.querySelector('.language-select').setAttribute('aria-label', translations[lang]['language-select-label']);
+      
+      // Guardar preferencia
+      localStorage.setItem('language', lang);
+    }
+
+    languageSelect.addEventListener('change', function() {
+      changeLanguage(this.value);
+    });
+
+    /* --- Funcionalidad del toggle de tema --- */
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Cambiar entre modo claro y oscuro
+    themeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.documentElement.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.add('dark-mode');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    /* --- Inicialización basada en preferencias guardadas --- */
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar preferencia de idioma
+      const savedLanguage = localStorage.getItem('language') || 'es';
+      languageSelect.value = savedLanguage;
+      changeLanguage(savedLanguage);
+      
+      // Cargar preferencia de tema
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('dark-mode');
+        themeToggle.checked = false;
+      } else {
+        // Por defecto es tema oscuro (el nuevo principal)
+        document.documentElement.classList.remove('dark-mode');
+        themeToggle.checked = true;
+      }
+    });
+  </script>
+</body>
+</html>
