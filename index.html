@@ -778,11 +778,115 @@
         --c-border: rgba(51, 65, 85, 0.6);
       }
     }
+
+    /* ---------  MODAL (nuevo)  --------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 240ms ease;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      /* ancho reducido para que no quede tan amplio */
+      width: min(720px, calc(100% - 48px));
+      max-width: 720px;
+      max-height: 80vh;
+      background: var(--c-card-bg);
+      color: var(--c-text);
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(2,6,23,0.5);
+      transform: translateY(12px) scale(0.98);
+      opacity: 0;
+      transition: all 280ms cubic-bezier(.2,.9,.2,1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--c-border);
+    }
+    .modal-overlay.open .modal {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .modal-header {
+      display:flex;
+      align-items:center;
+      justify-content:center; /* centramos el contenido visualmente */
+      gap:1rem;
+      padding:1rem 1.25rem;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      position: relative;
+    }
+    .modal-title {
+      font-weight:700;
+      font-size:1.125rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      margin: 0 auto;
+    }
+    .modal-title span { font-size:0.95rem; color:var(--c-muted); font-weight:500; }
+    .modal-body {
+      padding:1rem;
+      overflow:auto;
+    }
+    .docs-list {
+      display:flex;
+      flex-direction:column;
+      gap:0.75rem;
+    }
+    .doc-item {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      padding:0.9rem 1rem;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(59,130,246,0.04), transparent);
+      border:1px solid var(--c-border);
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+    .doc-item a {
+      color:var(--c-primary);
+      text-decoration:none;
+      font-weight:600;
+    }
+    .doc-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow);
+      background: linear-gradient(90deg, rgba(59,130,246,0.08), transparent);
+    }
+
+    /* small responsive */
+    @media (max-width: 520px) {
+      .modal { width: calc(100% - 24px); max-height: 88vh; }
+      .modal-title { font-size:1rem; }
+    }
+
+    /* Ensure modal respects dark-mode variables already defined */
   </style>
 </head>
 <body>
   <!-- Partículas flotantes -->
   <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -912,55 +1016,55 @@
   <!-- =======  HOME (grid)  ======= -->
   <main id="home" class="container page-transition">
     <section class="grid">
-      <a href="#detalle1" class="card" aria-label="Documentos Institucionales">
+      <a href="#" class="card" data-modal="detalle1" aria-label="Documentos Institucionales">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/document.png" class="card-icon" alt="">
         <span data-es="Documentos Institucionales" data-en="Institutional Documents">Documentos Institucionales</span>
         <small data-es="Estatuto, Reglamentos y Plan Estratégico" data-en="Statute, Regulations and Strategic Plan">Estatuto, Reglamentos y Plan Estratégico</small>
       </a>
 
-      <a href="#detalle2" class="card" aria-label="Actas y Resoluciones">
+      <a href="#" class="card" data-modal="detalle2" aria-label="Actas y Resoluciones">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/certificate.png" class="card-icon" alt="">
         <span data-es="Actas y Resoluciones" data-en="Minutes and Resolutions">Actas y Resoluciones</span>
         <small data-es="Disposiciones oficiales" data-en="Official provisions">Disposiciones oficiales</small>
       </a>
 
-      <a href="#detalle3" class="card" aria-label="Información Financiera">
+      <a href="#" class="card" data-modal="detalle3" aria-label="Información Financiera">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/bar-chart.png" class="card-icon" alt="">
         <span data-es="Información Financiera" data-en="Financial Information">Información Financiera</span>
         <small data-es="Estados financieros auditados" data-en="Audited financial statements">Estados financieros auditados</small>
       </a>
 
-      <a href="#detalle4" class="card" aria-label="Becas y Créditos">
+      <a href="#" class="card" data-modal="detalle4" aria-label="Becas y Créditos">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/graduation-cap.png" class="card-icon" alt="">
         <span data-es="Becas y Créditos" data-en="Scholarships and Credits">Becas y Créditos</span>
         <small data-es="Programas de apoyo estudiantil" data-en="Student support programs">Programas de apoyo estudiantil</small>
       </a>
 
-      <a href="#detalle5" class="card" aria-label="Investigación">
+      <a href="#" class="card" data-modal="detalle5" aria-label="Investigación">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/microscope.png" class="card-icon" alt="">
         <span data-es="Investigación" data-en="Research">Investigación</span>
         <small data-es="Proyectos y publicaciones científicas" data-en="Scientific projects and publications">Proyectos y publicaciones científicas</small>
       </a>
 
-      <a href="#detalle6" class="card" aria-label="Tarifas Académicas">
-        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/money.png" class="card-icon" alt="">
-        <span data-es="Tarifas Académicas" data-en="Academic Rates">Tarifas Académicas</span>
-        <small data-es="Costos y tasas vigentes" data-en="Current costs and rates">Costos y tasas vigentes</small>
+      <a href="#" class="card" data-modal="detalle6" aria-label="Plan de Estudio">
+        <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/open-book.png" class="card-icon" alt="Ícono Plan de Estudio">
+        <span data-es="Plan de Estudio" data-en="Academic Rates">Plan de Estudio</span>
+        <small data-es="Planes de Estudio por Carrera" data-en="Current costs and rates">Planes de estudio por carrera</small>
       </a>
 
-      <a href="#detalle7" class="card" aria-label="Admisión">
+      <a href="#" class="card" data-modal="detalle7" aria-label="Admisión">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/conference.png" class="card-icon" alt="">
         <span data-es="Admisión" data-en="Admission">Admisión</span>
         <small data-es="Postulantes y matriculados" data-en="Applicants and enrolled students">Postulantes y matriculados</small>
       </a>
 
-      <a href="#detalle8" class="card" aria-label="Plana Docente">
+      <a href="#" class="card" data-modal="detalle8" aria-label="Plana Docente">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/teacher.png" class="card-icon" alt="">
         <span data-es="Plana Docente" data-en="Faculty">Plana Docente</span>
         <small data-es="Información académica" data-en="Academic information">Información académica</small>
       </a>
 
-      <a href="#detalle9" class="card" aria-label="Normativa Interna">
+      <a href="#" class="card" data-modal="detalle9" aria-label="Normativa Interna">
         <img src="https://img.icons8.com/fluency-systems-regular/96/3b82f6/scales.png" class="card-icon" alt="">
         <span data-es="Normativa Interna" data-en="Internal Regulations">Normativa Interna</span>
         <small data-es="Reglamentos y procedimientos" data-en="Regulations and procedures">Reglamentos y procedimientos</small>
@@ -1053,6 +1157,31 @@
       </a>
     </div>
   </footer>
+
+  <!-- =======  MODAL (nuevo)  ======= -->
+  <div id="unid-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <div class="modal-title">
+          <strong id="modal-title">Título</strong>
+          <span id="modal-subtitle">Subtítulo</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <button id="modal-close" aria-label="Cerrar modal" style="background:none;border:0;color:var(--c-muted);padding:0.5rem;border-radius:8px;cursor:pointer">
+            <!-- simple X icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 011.708 0L8 6.293l1.646-1.647a.5.5 0 11.708.708L8.707 7l1.647 1.646a.5.5 0 01-.708.708L8 7.707l-1.646 1.647a.5.5 0 01-.708-.708L7.293 7 5.646 5.354a.5.5 0 010-.708z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="docs-list" id="modal-docs">
+          <!-- documentos generados por JS -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     /* --- Carrusel de imágenes mejorado --- */
@@ -1228,6 +1357,183 @@
         themeToggle.checked = true;
       }
     });
+
+    /* --- Modal: mapa de documentos y lógica (mejorada para usar assets/{key}/manifest.json o rutas por defecto) --- */
+    (function(){
+      const modalOverlay = document.getElementById('unid-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalSubtitle = document.getElementById('modal-subtitle');
+      const modalDocs = document.getElementById('modal-docs');
+      const modalClose = document.getElementById('modal-close');
+
+      // Guarda la clave y tarjeta abiertas para re-render al cambiar idioma
+      let currentModalKey = null;
+      let lastCard = null;
+
+      // Mapa de documentos por sección (ejemplos, preferiblemente reemplaza por tus rutas reales en assets/)
+      const docsMap = {
+        detalle1: [
+          { title_es: 'Estatuto UNID', title_en: 'UNID Statute (PDF)', url: 'assets/documentos-subidos/docs-institucionales/estatuto_unid.pdf' },
+          { title_es: 'Plan Estratégico Institucional', title_en: 'Institutional Strategic Plan', url: 'assets/documentos-subidos/docs-institucionales/plan_estrategico_institucional.pdf' },
+          { title_es: 'Reglamento General UNID', title_en: 'General Regulations UNID', url: 'assets/documentos-subidos/docs-institucionales/reglamento_general_unid.pdf' }
+        ],
+        detalle2: [
+          { title_es: 'Aclaración de Acuerdos y Otros Actos', title_en: 'Clarification of Agreements and Other Acts', url: 'assets/documentos-subidos/actas-resoluciones/aclaracion_acuerdos_otros_actos.pdf' },
+          { title_es: 'Resumen General de Accionistas 1', title_en: 'General Shareholders Summary 1', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_1.pdf' },
+          { title_es: 'Resumen General de Accionistas 2', title_en: 'General Shareholders Summary 2', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_2.pdf' }
+
+        ],
+        detalle3: [
+          { title_es: 'Estados Financieros UNID', title_en: 'Financial Statements', url: 'assets/documentos-subidos/inf-financiera/estados_financieros_unid.pdf' },
+          { title_es: 'Plan de Inversiones', title_en: 'Investments Plan', url: 'assets/documentos-subidos/inf-financiera/plan_inversion.pdf' }
+
+        ],
+        detalle4: [
+        ],
+        detalle5: [
+          { title_es: 'Lineas de Investigación', title_en: 'Research Lines', url: 'assets/documentos-subidos/investigacion/lineas_investigacion.pdf' }
+        ],
+        detalle6: [
+          { title_es: 'Plan de Estudio de la Carrera Profesional de Enfermería', title_en: 'Nursing Curriculum Plan', url: 'assets/documentos-subidos/plan-estudios/plan_enfermeria.pdf' },
+          { title_es: 'Plan de Estudio de la Carrera Profesional de Farmacia y Bioquímica', title_en: 'Pharmacy and Biochemistry Curriculum Plan', url: 'assets/documentos-subidos/plan-estudios/plan_farmacia_bioquimica.pdf' },
+
+        ],
+        detalle7: [
+          
+        ],
+        detalle8: [
+          { title_es: 'Designación Docente', title_en: 'Faculty Appointment', url: 'assets/documentos-subidos/plana-docente/designacion_docente.pdf' }
+        ],
+        detalle9: [
+          { title_es: 'Reglamento del Programa de Inserción Laboral y Seguimiento al Egresado', title_en: 'Regulations of the Graduate Employment and Follow-up Program', url: 'assets/documentos-subidos/norm-interna/insercion_laboral_seguimiento_egresado.pdf' },
+          { title_es: 'Reglamento del Servicio Social y Bienestar UNID', title_en: 'Regulations of the Social Service and Welfare UNID', url: 'assets/documentos-subidos/norm-interna/servicio_social_bienestar_unid.pdf' },
+          { title_es: 'Texto Único de Procedimientos Administrativos (TUPA)', title_en: 'Single Text of Administrative Procedures', url: 'assets/documentos-subidos/norm-interna/texto_unico_procedimientos_administrativos.pdf' }
+
+
+        ]
+      };
+
+      // Intenta leer un manifest en assets/{key}/manifest.json si existe (formato: [{ title_es, title_en, url }, ...])
+      async function fetchManifest(key) {
+        try {
+          const res = await fetch(`assets/${key}/manifest.json`, { cache: 'no-store' });
+          if (!res.ok) return null;
+          const json = await res.json();
+          if (Array.isArray(json)) return json;
+          return null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      // Render del modal (usa manifest si existe, sino fallback a docsMap)
+      async function openModal(key, cardElement) {
+        currentModalKey = key;
+        lastCard = cardElement || null;
+
+        const span = cardElement ? cardElement.querySelector('span[data-es][data-en]') : null;
+        const small = cardElement ? cardElement.querySelector('small[data-es][data-en]') : null;
+        const titleText = span ? span.getAttribute(currentLanguage === 'es' ? 'data-es' : 'data-en') : key;
+        const subtitleText = small ? (currentLanguage === 'es' ? small.getAttribute('data-es') : small.getAttribute('data-en')) : '';
+
+        modalTitle.textContent = titleText || key;
+        modalSubtitle.textContent = subtitleText || '';
+
+        modalDocs.innerHTML = ''; // limpiar
+
+        // Primero intentar manifest en assets/{key}/manifest.json
+        const manifest = await fetchManifest(key);
+        const docs = manifest || docsMap[key] || [];
+
+        if (docs.length === 0) {
+          const el = document.createElement('div');
+          el.className = 'doc-item';
+          el.textContent = currentLanguage === 'es' ? 'No hay documentos disponibles.' : 'No documents available.';
+          modalDocs.appendChild(el);
+        } else {
+          docs.forEach(doc => {
+            const item = document.createElement('div');
+            item.className = 'doc-item';
+
+            const name = document.createElement('div');
+            name.style.flex = '1';
+            // si manifest viene con title_es/title_en o con title (genérico)
+            const title_es = doc.title_es || doc.title;
+            const title_en = doc.title_en || doc.title;
+            name.textContent = currentLanguage === 'es' ? (title_es || doc.url) : (title_en || doc.url);
+
+            const link = document.createElement('a');
+            // si manifest proporciona url relativa, la usamos; sino asumimos assets/{key}/{archivo}
+            const url = doc.url || `assets/${key}/${encodeURIComponent((title_es || title_en || 'documento') + '.pdf')}`;
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = currentLanguage === 'es' ? 'Ver / Descargar' : 'View / Download';
+
+            item.appendChild(name);
+            item.appendChild(link);
+            modalDocs.appendChild(item);
+          });
+        }
+
+        modalOverlay.classList.remove('hidden');
+        modalOverlay.classList.add('open');
+        modalOverlay.setAttribute('aria-hidden','false');
+        modalClose.focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        currentModalKey = null;
+        lastCard = null;
+        modalOverlay.classList.remove('open');
+        modalOverlay.classList.add('hidden');
+        modalOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+
+      // Asignar eventos a las tarjetas
+      document.querySelectorAll('.card[data-modal]').forEach(card => {
+        card.addEventListener('click', function(ev){
+          ev.preventDefault();
+          const key = this.getAttribute('data-modal');
+          openModal(key, this);
+        });
+        card.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const key = this.getAttribute('data-modal');
+            openModal(key, this);
+          }
+        });
+        card.tabIndex = 0;
+      });
+
+      // cerrar al click en X o en overlay fuera de .modal
+      modalClose.addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', function(e){
+        if (e.target === modalOverlay) closeModal();
+      });
+
+      // cerrar con ESC
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && modalOverlay.classList.contains('open')) {
+          closeModal();
+        }
+      });
+
+      // Re-renderizar modal si cambia el idioma y hay uno abierto
+      const originalChangeLanguage = window.changeLanguage;
+      if (typeof originalChangeLanguage === 'function') {
+        window.changeLanguage = function(lang) {
+          originalChangeLanguage(lang);
+          if (modalOverlay.classList.contains('open') && currentModalKey) {
+            // reabrir el modal con la misma clave y tarjeta para actualizar textos
+            openModal(currentModalKey, lastCard);
+          }
+        };
+      }
+    })();
   </script>
 </body>
 </html>
