@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="img/mundo-unid.png" sizes="32x32" />
   <link rel="shortcut icon" href="img/mundo-unid.png" type="image/png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=accessible_forward" />
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Portal de Transparencia – Universidad Interamericana para el Desarrollo</title>
   <style>
@@ -780,108 +781,330 @@
       }
     }
 
-    /* ---------  MODAL (nuevo)  --------- */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 240ms ease;
-      backdrop-filter: blur(6px);
-    }
-    .modal-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal {
-      /* ancho reducido para que no quede tan amplio */
-      width: min(720px, calc(100% - 48px));
-      max-width: 720px;
-      max-height: 80vh;
-      background: var(--c-card-bg);
-      color: var(--c-text);
-      border-radius: 14px;
-      box-shadow: 0 20px 40px rgba(2,6,23,0.5);
-      transform: translateY(12px) scale(0.98);
-      opacity: 0;
-      transition: all 280ms cubic-bezier(.2,.9,.2,1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--c-border);
-    }
-    .modal-overlay.open .modal {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-    .modal-header {
-      display:flex;
-      align-items:center;
-      justify-content:center; /* centramos el contenido visualmente */
-      gap:1rem;
-      padding:1rem 1.25rem;
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-      position: relative;
-    }
-    .modal-title {
-      font-weight:700;
-      font-size:1.125rem;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      margin: 0 auto;
-    }
-    .modal-title span { font-size:0.95rem; color:var(--c-muted); font-weight:500; }
-    .modal-body {
-      padding:1rem;
-      overflow:auto;
-    }
-    .docs-list {
-      display:flex;
-      flex-direction:column;
-      gap:0.75rem;
-    }
-    .doc-item {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-      padding:0.9rem 1rem;
-      border-radius:12px;
-      background: linear-gradient(90deg, rgba(59,130,246,0.04), transparent);
-      border:1px solid var(--c-border);
-      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
-    }
-    .doc-item a {
-      color:var(--c-primary);
-      text-decoration:none;
-      font-weight:600;
-    }
-    .doc-item:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--card-shadow);
-      background: linear-gradient(90deg, rgba(59,130,246,0.08), transparent);
-    }
+    /* ---------  ACCESIBILIDAD: Botón flotante y modal  --------- */
+.access-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(37,99,235,0.35), 0 2px 8px rgba(37,99,235,0.2);
+  z-index: 350;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  border: 0;
+}
+.access-button:hover { 
+  transform: scale(1.08); 
+  box-shadow: 0 12px 32px rgba(37,99,235,0.45), 0 4px 12px rgba(37,99,235,0.25);
+}
+.access-button:focus { 
+  outline: 3px solid rgba(37,99,235,0.3); 
+  outline-offset: 4px; 
+}
+.access-button:active {
+  transform: scale(1.02);
+}
 
-    /* small responsive */
-    @media (max-width: 520px) {
-      .modal { width: calc(100% - 24px); max-height: 88vh; }
-      .modal-title { font-size:1rem; }
-    }
+@media (max-width: 520px) {
+  .access-button { 
+    right: 16px; 
+    bottom: 16px; 
+    width: 64px; 
+    height: 64px; 
+  }
+}
 
-    /* Ensure modal respects dark-mode variables already defined */
+/* Accessibility modal */
+.accessibility-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 360;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  backdrop-filter: blur(6px);
+  background: rgba(2,6,23,0.45);
+}
+.accessibility-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.accessibility-modal {
+  width: min(500px, calc(100% - 32px));
+  max-height: 90vh;
+  background: #ffffff;
+  color: #1a1a1a;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  transform: translateY(8px);
+  opacity: 0;
+  transition: all 220ms cubic-bezier(.2,.9,.2,1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.accessibility-overlay.open .accessibility-modal { transform: translateY(0); opacity: 1; }
+
+.accessibility-header {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 20px;
+  border-bottom:1px solid rgba(0,0,0,0.08);
+  background: #ffffff;
+}
+.accessibility-title { 
+  font-weight:700; 
+  font-size:1.125rem; 
+  margin-left:0px;
+  color: #1a1a1a;
+  flex: 1;
+}
+.accessibility-body {
+  padding: 20px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+  background: #ffffff;
+}
+
+.acc-row { 
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between; 
+  gap:16px;
+  padding: 4px 0;
+}
+.acc-label { 
+  display:flex; 
+  align-items:center; 
+  gap:12px; 
+  font-weight:600; 
+  font-size: 0.95rem;
+  color:#1a1a1a;
+}
+.acc-label svg {
+  color: #666;
+  flex-shrink: 0;
+}
+.acc-sub { 
+  color:#666; 
+  font-size:0.875rem; 
+  margin-top: 4px;
+}
+
+.acc-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width:100%;
+  height:4px;
+  background: #e5e5e5;
+  border-radius:4px;
+  outline:none;
+  margin-top: 12px;
+}
+.acc-slider::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:20px; 
+  height:20px; 
+  border-radius:50%;
+  background: #2563eb;
+  border: 0;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+  cursor:pointer;
+}
+.acc-slider::-moz-range-thumb {
+  width:20px; 
+  height:20px; 
+  border-radius:50%;
+  background: #2563eb;
+  border: 0;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+  cursor:pointer;
+}
+
+.acc-toggle {
+  width:48px; 
+  height:28px; 
+  border-radius:999px; 
+  background:#e5e5e5; 
+  border:0; 
+  position:relative; 
+  padding:2px; 
+  cursor:pointer;
+  transition: background 200ms ease;
+}
+.acc-toggle .knob { 
+  width:24px; 
+  height:24px; 
+  border-radius:50%; 
+  background:#ffffff; 
+  transition:transform 220ms ease; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.acc-toggle.on { 
+  background: #2563eb;
+}
+.acc-toggle.on .knob { 
+  transform: translateX(20px); 
+}
+
+.acc-select {
+  width:100%;
+  padding:10px 14px;
+  border-radius:8px;
+  background:#ffffff;
+  border:1px solid #d1d5db;
+  color:#1a1a1a;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.acc-select:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 0;
+  border-color: #2563eb;
+}
+
+.acc-footer { 
+  padding:16px 20px; 
+  border-top:1px solid rgba(0,0,0,0.08); 
+  display:flex; 
+  gap:12px; 
+  justify-content:flex-end;
+  background: #ffffff;
+}
+.acc-btn { 
+  padding:10px 20px; 
+  border-radius:8px; 
+  background:#ffffff; 
+  border:1px solid #d1d5db; 
+  color:#1a1a1a; 
+  cursor:pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 160ms ease;
+}
+.acc-btn:hover {
+  background: #f9fafb;
+}
+.acc-btn.primary { 
+  background: #2563eb; 
+  color:#ffffff; 
+  border:0; 
+  box-shadow:0 2px 8px rgba(37,99,235,0.25);
+}
+.acc-btn.primary:hover {
+  background: #1d4ed8;
+  box-shadow:0 4px 12px rgba(37,99,235,0.3);
+}
+
+/* Section divider for better visual grouping */
+.accessibility-body > div {
+  padding-bottom: 4px;
+}
+
+/* High contrast mode variables */
+.high-contrast, .high-contrast * {
+  filter: none !important;
+}
+.high-contrast {
+  --c-bg: #000000;
+  --c-text: #ffffff;
+  --c-card-bg: #000000;
+  --c-muted: #ffffff;
+  --c-border: rgba(255,255,255,0.12);
+}
+.high-contrast .accessibility-modal {
+  background: #000000;
+  border: 2px solid #ffffff;
+}
+.high-contrast .accessibility-body,
+.high-contrast .accessibility-header,
+.high-contrast .acc-footer {
+  background: #000000;
+}
+.high-contrast .accessibility-title,
+.high-contrast .acc-label {
+  color: #ffffff;
+}
+.high-contrast .acc-select,
+.high-contrast .acc-btn {
+  background: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+.high-contrast .acc-slider {
+  background: #333;
+}
+
+/* Reduce animations */
+.reduce-animations *, .reduce-animations *::before, .reduce-animations *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Highlight focus for keyboard-nav improved */
+.keyboard-nav :focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48;
+  font-size: 38px;
+  user-select: none;
+}
+
+/* Daltonism filters */
+.dalton-deuteranopia { filter: url(#deuteranopia); }
+.dalton-protanopia { filter: url(#protanopia); }
+.dalton-tritanopia { filter: url(#tritanopia); }
+
+@media (max-width: 520px) {
+  .accessibility-modal { 
+    width: calc(100% - 24px); 
+    max-height: 94vh; 
+  }
+  .access-button { 
+    right:14px; 
+    bottom:14px; 
+    width:52px; 
+    height:52px; 
+  }
+  .accessibility-body {
+    padding: 16px;
+    gap: 20px;
+  }
+}
+
   </style>
 </head>
 <body>
   <!-- Partículas flotantes -->
   <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -1118,6 +1341,164 @@
     </div>
   </div>
 
+<!-- Accesibilidad: botón flotante y panel -->
+<!-- Accesibilidad: botón flotante y panel -->
+<button id="accessibility-button" class="access-button" aria-haspopup="dialog" aria-label="Opciones de accesibilidad" title="Opciones de accesibilidad">
+  <span class="material-symbols-outlined">accessible_forward</span>
+</button>
+
+  <div id="accessibility-overlay" class="accessibility-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="accessibility-modal" role="document" aria-labelledby="accessibility-title">
+    <div class="accessibility-header">
+      <div style="width:40px;height:40px;border-radius:10px;background:#2563eb;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+      </div>
+      <div class="accessibility-title" id="accessibility-title">Opciones de Accesibilidad</div>
+      <button id="accessibility-close" aria-label="Cerrar opciones" style="background:none;border:0;color:#666;cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="accessibility-body" id="accessibility-body">
+      <!-- Tamaño de texto -->
+      <div>
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="4 7 4 4 20 4 20 7"/>
+            <line x1="9" y1="20" x2="15" y2="20"/>
+            <line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+          <div>Tamaño de texto: <strong id="label-text-size">100%</strong></div>
+        </div>
+        <input id="text-size" type="range" min="80" max="160" value="100" class="acc-slider" />
+      </div>
+
+      <!-- Espaciado de líneas -->
+      <div>
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <div>Espaciado de líneas: <strong id="label-line-spacing">150%</strong></div>
+        </div>
+        <input id="line-spacing" type="range" min="100" max="200" value="150" class="acc-slider" />
+      </div>
+
+      <!-- Alto contraste -->
+      <div class="acc-row">
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2v20"/>
+          </svg>
+          <div>Alto contraste</div>
+        </div>
+        <div id="toggle-high-contrast" class="acc-toggle" role="switch" aria-checked="false">
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Daltonismo -->
+      <div>
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <div>Soporte para daltonismo</div>
+        </div>
+        <select id="daltonism-select" class="acc-select" aria-label="Soporte para daltonismo">
+          <option value="none">Ninguno</option>
+          <option value="deuteranopia">Deuteranopia</option>
+          <option value="protanopia">Protanopia</option>
+          <option value="tritanopia">Tritanopia</option>
+        </select>
+      </div>
+
+      <!-- Tamaño del cursor -->
+      <div>
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+          </svg>
+          <div>Tamaño del cursor: <strong id="label-cursor-size">100%</strong></div>
+        </div>
+        <input id="cursor-size" type="range" min="60" max="220" value="100" class="acc-slider" />
+      </div>
+
+      <!-- Reducir animaciones -->
+      <div class="acc-row">
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <div>Reducir animaciones</div>
+        </div>
+        <div id="toggle-reduce-animations" class="acc-toggle" role="switch" aria-checked="false">
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Navegación por teclado mejorada -->
+      <div class="acc-row">
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h8M6 16h12"/>
+          </svg>
+          <div>Navegación por teclado mejorada</div>
+        </div>
+        <div id="toggle-keyboard-nav" class="acc-toggle" role="switch" aria-checked="false">
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Anuncios de lector de pantalla -->
+      <div class="acc-row">
+        <div class="acc-label">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <div>Anuncios de lector de pantalla</div>
+        </div>
+        <div id="toggle-screenreader" class="acc-toggle" role="switch" aria-checked="false">
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="acc-footer">
+      <button id="acc-reset" class="acc-btn">Restablecer configuración</button>
+      <button id="acc-close" class="acc-btn primary">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+  <!-- SVG filters para daltonismo (visuales aproximados) -->
+  <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
+    <filter id="deuteranopia">
+      <feColorMatrix type="matrix" values="0.625 0.7 0 0 0 0.7 0.625 0 0 0 0 0 0.35 0 0 0 0 0 1 0"/>
+    </filter>
+    <filter id="protanopia">
+      <feColorMatrix type="matrix" values="0.567 0.433 0 0 0 0.558 0.442 0 0 0 0 0.242 0.758 0 0 0 0 0 1 0"/>
+    </filter>
+    <filter id="tritanopia">
+      <feColorMatrix type="matrix" values="0.95 0.05 0 0 0 0 0.433 0.567 0 0 0 0.475 0.525 0 0 0 0 0 1 0"/>
+    </filter>
+  </svg>
+
+  <!-- Región para anuncios de lector de pantalla -->
+  <div id="sr-announcer" aria-live="polite" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"></div>
+
   <script>
     /* --- Carrusel de imágenes mejorado --- */
     let currentSlide = 0;
@@ -1339,7 +1720,7 @@
         ],
         detalle8: [
           { title_es: 'Designación Docente', title_en: 'Faculty Appointment', url: 'assets/documentos-subidos/plana-docente/designacion_docente.pdf' },
-          { title_es: 'CV Docentes', title_en: 'Faculty CV', url: 'https://drive.google.com/file/d/16ZXZ0aEEqbbD1j1bHrk81HB3-8MdfxIU/view?usp=sharing' }
+          { title_es: 'CV Docentes', title_en: 'Faculty CV', url: 'assets/documentos-subidos/plana-docente/cv_docentes.pdf' }
 
         ],
         detalle9: [
@@ -1469,6 +1850,197 @@
           }
         };
       }
+    })();
+
+    // --- Accesibilidad: lógica del panel ---
+    (function(){
+      const btn = document.getElementById('accessibility-button');
+      const overlay = document.getElementById('accessibility-overlay');
+      const closeBtns = [document.getElementById('accessibility-close'), document.getElementById('acc-close')];
+      const resetBtn = document.getElementById('acc-reset');
+      const srAnnouncer = document.getElementById('sr-announcer');
+
+      const textSize = document.getElementById('text-size');
+      const labelTextSize = document.getElementById('label-text-size');
+      const lineSpacing = document.getElementById('line-spacing');
+      const labelLine = document.getElementById('label-line-spacing');
+      const daltonism = document.getElementById('daltonism-select');
+      const cursorSize = document.getElementById('cursor-size');
+      const labelCursor = document.getElementById('label-cursor-size');
+
+      const toggleHighContrast = document.getElementById('toggle-high-contrast');
+      const toggleReduceAnimations = document.getElementById('toggle-reduce-animations');
+      const toggleKeyboardNav = document.getElementById('toggle-keyboard-nav');
+      const toggleScreenReader = document.getElementById('toggle-screenreader');
+
+      const storageKey = 'unid_accessibility_v1';
+
+      function open() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden','false');
+        // focus trap: focus first interactive
+        setTimeout(()=> textSize.focus(), 120);
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+        btn.focus();
+      }
+
+      btn.addEventListener('click', open);
+      btn.addEventListener('keydown', (e)=>{ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); open(); } });
+      closeBtns.forEach(b=> b && b.addEventListener('click', close));
+      overlay.addEventListener('click', (e)=> { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', (e)=> { if (e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+      // Helper: announce for screen readers
+      function announce(msg) {
+        if (!toggleScreenReader.classList.contains('on')) return;
+        srAnnouncer.textContent = '';
+        setTimeout(()=> srAnnouncer.textContent = msg, 50);
+      }
+
+      // Apply functions
+      function applyTextSize(v) {
+        labelTextSize.textContent = v + '%';
+        document.documentElement.style.fontSize = v + '%';
+        announce('Tamaño de texto ' + v + ' por ciento');
+      }
+      function applyLineSpacing(v) {
+        labelLine.textContent = v + '%';
+        // base line-height 1.6 -> escalar
+        document.body.style.lineHeight = (v/100 * 1.6).toString();
+        announce('Espaciado de líneas ' + v + ' por ciento');
+      }
+      function applyHighContrast(on) {
+        if (on) document.documentElement.classList.add('high-contrast'); else document.documentElement.classList.remove('high-contrast');
+        toggleHighContrast.setAttribute('aria-checked', !!on);
+        toggleHighContrast.classList.toggle('on', !!on);
+        announce(on ? 'Alto contraste activado' : 'Alto contraste desactivado');
+      }
+      function applyDaltonism(value) {
+        document.documentElement.classList.remove('dalton-deuteranopia','dalton-protanopia','dalton-tritanopia');
+        if (value === 'deuteranopia') document.documentElement.classList.add('dalton-deuteranopia');
+        if (value === 'protanopia') document.documentElement.classList.add('dalton-protanopia');
+        if (value === 'tritanopia') document.documentElement.classList.add('dalton-tritanopia');
+        announce(value === 'none' ? 'Filtro para daltonismo desactivado' : ('Filtro ' + value + ' activado'));
+      }
+
+      // Cursor: generar data URL SVG con tamaño y color
+      function applyCursor(sizePercent) {
+        labelCursor.textContent = sizePercent + '%';
+        // tamaño base 20 -> escalar
+        const size = Math.round(24 * sizePercent / 100);
+        const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}' viewBox='0 0 ${size} ${size}'><circle cx='${size/2}' cy='${size/2}' r='${Math.max(2, size/2 - 1)}' fill='${encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--c-primary').trim() || '#3b82f6')}' /></svg>`;
+        const url = 'data:image/svg+xml;utf8,' + svg;
+        document.documentElement.style.cursor = `url("${url}") ${Math.floor(size/2)} ${Math.floor(size/2)}, auto`;
+        announce('Tamaño del cursor ' + sizePercent + ' por ciento');
+      }
+
+      function applyReduceAnimations(on) {
+        document.documentElement.classList.toggle('reduce-animations', !!on);
+        toggleReduceAnimations.setAttribute('aria-checked', !!on);
+        toggleReduceAnimations.classList.toggle('on', !!on);
+        announce(on ? 'Animaciones reducidas' : 'Animaciones normales');
+      }
+
+      function applyKeyboardNav(on) {
+        document.documentElement.classList.toggle('keyboard-nav', !!on);
+        toggleKeyboardNav.setAttribute('aria-checked', !!on);
+        toggleKeyboardNav.classList.toggle('on', !!on);
+        announce(on ? 'Navegación por teclado mejorada activada' : 'Navegación por teclado mejorada desactivada');
+      }
+
+      function applyScreenReader(on) {
+        toggleScreenReader.setAttribute('aria-checked', !!on);
+        toggleScreenReader.classList.toggle('on', !!on);
+        announce(on ? 'Anuncios de lector de pantalla activados' : 'Anuncios de lector de pantalla desactivados');
+      }
+
+      // Toggle helpers (click on custom toggle)
+      function wireToggle(el, setter) {
+        el.addEventListener('click', ()=> {
+          const isOn = el.classList.toggle('on');
+          el.setAttribute('aria-checked', isOn);
+          setter(isOn);
+        });
+      }
+
+      // Guardar/recuperar estado
+      function saveState(state) {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+      function loadState() {
+        try {
+          const s = JSON.parse(localStorage.getItem(storageKey) || '{}');
+          return s;
+        } catch (e) { return {}; }
+      }
+
+      // Inicializar controles y listeners
+      function init() {
+        const s = loadState();
+
+        // defaults
+        const defText = s.textSize || 100;
+        const defLine = s.lineSpacing || 150;
+        const defDalton = s.daltonism || 'none';
+        const defCursor = s.cursorSize || 100;
+        const defHigh = !!s.highContrast;
+        const defReduce = !!s.reduceAnimations;
+        const defKeyboard = !!s.keyboardNav;
+        const defScreen = !!s.screenReader;
+
+        textSize.value = defText; labelTextSize.textContent = defText + '%'; applyTextSize(defText);
+        lineSpacing.value = defLine; labelLine.textContent = defLine + '%'; applyLineSpacing(defLine);
+        daltonism.value = defDalton; applyDaltonism(defDalton);
+        cursorSize.value = defCursor; labelCursor.textContent = defCursor + '%'; applyCursor(defCursor);
+        toggleHighContrast.classList.toggle('on', defHigh); toggleHighContrast.setAttribute('aria-checked', defHigh); applyHighContrast(defHigh);
+        toggleReduceAnimations.classList.toggle('on', defReduce); toggleReduceAnimations.setAttribute('aria-checked', defReduce); applyReduceAnimations(defReduce);
+        toggleKeyboardNav.classList.toggle('on', defKeyboard); toggleKeyboardNav.setAttribute('aria-checked', defKeyboard); applyKeyboardNav(defKeyboard);
+        toggleScreenReader.classList.toggle('on', defScreen); toggleScreenReader.setAttribute('aria-checked', defScreen); applyScreenReader(defScreen);
+
+        // events
+        textSize.addEventListener('input', ()=> { applyTextSize(textSize.value); persist(); });
+        lineSpacing.addEventListener('input', ()=> { applyLineSpacing(lineSpacing.value); persist(); });
+        daltonism.addEventListener('change', ()=> { applyDaltonism(daltonism.value); persist(); });
+        cursorSize.addEventListener('input', ()=> { applyCursor(cursorSize.value); persist(); });
+
+        wireToggle(toggleHighContrast, (v)=> { applyHighContrast(v); persist(); });
+        wireToggle(toggleReduceAnimations, (v)=> { applyReduceAnimations(v); persist(); });
+        wireToggle(toggleKeyboardNav, (v)=> { applyKeyboardNav(v); persist(); });
+        wireToggle(toggleScreenReader, (v)=> { applyScreenReader(v); persist(); });
+
+        resetBtn.addEventListener('click', ()=> {
+          localStorage.removeItem(storageKey);
+          // restablecer a valores por defecto
+          textSize.value = 100; lineSpacing.value = 150; daltonism.value = 'none'; cursorSize.value = 100;
+          toggleHighContrast.classList.remove('on'); toggleReduceAnimations.classList.remove('on'); toggleKeyboardNav.classList.remove('on'); toggleScreenReader.classList.remove('on');
+          applyTextSize(100); applyLineSpacing(150); applyDaltonism('none'); applyCursor(100);
+          applyHighContrast(false); applyReduceAnimations(false); applyKeyboardNav(false); applyScreenReader(false);
+          announce('Configuración restablecida');
+          persist();
+        });
+      }
+
+      function persist() {
+        const state = {
+          textSize: Number(textSize.value),
+          lineSpacing: Number(lineSpacing.value),
+          daltonism: daltonism.value,
+          cursorSize: Number(cursorSize.value),
+          highContrast: toggleHighContrast.classList.contains('on'),
+          reduceAnimations: toggleReduceAnimations.classList.contains('on'),
+          keyboardNav: toggleKeyboardNav.classList.contains('on'),
+          screenReader: toggleScreenReader.classList.contains('on')
+        };
+        saveState(state);
+      }
+
+      // Inicializa
+      init();
     })();
   </script>
 </body>
