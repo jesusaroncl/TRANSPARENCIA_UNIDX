@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" type="image/png" href="img/mundo-unid.png" sizes="32x32" />
   <link rel="shortcut icon" href="img/mundo-unid.png" type="image/png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=accessible_forward" />
@@ -551,6 +551,8 @@
       min-height: 200px;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
     .card::before {
       content: "";
@@ -584,6 +586,9 @@
     }
     .card:hover::after {
       transform: scaleX(1);
+    }
+    .card:active {
+      transform: translateY(-4px);
     }
     .card small{
       font-size:.95rem; 
@@ -701,6 +706,118 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
+    /* ---------  MODAL RESPONSIVE  --------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal {
+      background: var(--c-card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      border: 1px solid var(--c-border);
+    }
+    
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--c-border);
+      background: var(--c-surface);
+    }
+    
+    .modal-title {
+      flex: 1;
+    }
+    
+    .modal-title strong {
+      display: block;
+      font-size: 1.25rem;
+      color: var(--c-text);
+      margin-bottom: 0.25rem;
+    }
+    
+    .modal-title span {
+      font-size: 0.9rem;
+      color: var(--c-muted);
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    
+    .docs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .doc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--c-primary-light);
+      border-radius: 8px;
+      border: 1px solid var(--c-border);
+      transition: var(--transition);
+    }
+    
+    .doc-item:hover {
+      background: var(--c-card-bg);
+      border-color: var(--c-primary);
+    }
+    
+    .doc-item a {
+      background: var(--c-primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    
+    .doc-item a:hover {
+      background: var(--c-primary-dark);
+      transform: translateY(-2px);
+    }
+    
     /* Responsive */
     @media (max-width: 768px) {
       .grid {
@@ -765,6 +882,49 @@
       .carousel-nav-next {
         right: 1rem;
       }
+      
+      /* Modal responsive para móviles */
+      .modal {
+        max-height: 85vh;
+        margin: 0.5rem;
+      }
+      
+      .modal-header {
+        padding: 1.25rem;
+      }
+      
+      .modal-body {
+        padding: 1.25rem;
+      }
+      
+      .doc-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      
+      .doc-item a {
+        align-self: stretch;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modal {
+        margin: 0.25rem;
+      }
+      
+      .modal-header {
+        padding: 1rem;
+      }
+      
+      .modal-body {
+        padding: 1rem;
+      }
+      
+      .doc-item {
+        padding: 0.75rem;
+      }
     }
 
     /* Modo claro automático */
@@ -799,6 +959,7 @@
   cursor: pointer;
   transition: transform 200ms ease, box-shadow 200ms ease;
   border: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 .access-button:hover { 
   transform: scale(1.08); 
@@ -1809,13 +1970,23 @@
         document.body.style.overflow = '';
       }
 
-      // Asignar eventos a las tarjetas
+      // Asignar eventos a las tarjetas - compatibilidad con touch y click
       document.querySelectorAll('.card[data-modal]').forEach(card => {
+        // Evento para click (ratón)
         card.addEventListener('click', function(ev){
           ev.preventDefault();
           const key = this.getAttribute('data-modal');
           openModal(key, this);
         });
+        
+        // Evento para touch (dispositivos móviles)
+        card.addEventListener('touchstart', function(ev){
+          ev.preventDefault();
+          const key = this.getAttribute('data-modal');
+          openModal(key, this);
+        }, { passive: false });
+        
+        // Evento para teclado
         card.addEventListener('keydown', function(e){
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -1831,6 +2002,14 @@
       modalOverlay.addEventListener('click', function(e){
         if (e.target === modalOverlay) closeModal();
       });
+      
+      // cerrar al touch en overlay fuera de .modal
+      modalOverlay.addEventListener('touchstart', function(e){
+        if (e.target === modalOverlay) {
+          e.preventDefault();
+          closeModal();
+        }
+      }, { passive: false });
 
       // cerrar con ESC
       document.addEventListener('keydown', function(e){
@@ -1851,7 +2030,7 @@
         };
       }
     })();
-<<<<<<< HEAD
+
 
     // --- Accesibilidad: lógica del panel ---
     (function(){
@@ -1891,6 +2070,7 @@
       }
 
       btn.addEventListener('click', open);
+      btn.addEventListener('touchstart', open);
       btn.addEventListener('keydown', (e)=>{ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); open(); } });
       closeBtns.forEach(b=> b && b.addEventListener('click', close));
       overlay.addEventListener('click', (e)=> { if (e.target === overlay) close(); });
@@ -2043,10 +2223,9 @@
       // Inicializa
       init();
     })();
-=======
+
     // confirmado
->>>>>>> c54b5b5cea4e9343a626bd59f17088e96a45cf3e
+
   </script>
 </body>
 </html>
-
