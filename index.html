@@ -29,15 +29,28 @@
     }
 
     /* ---------  RESET BÁSICO  --------- */
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    *,*::before,*::after{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
     body{
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
       background: linear-gradient(135deg, var(--c-bg) 0%, #1e293b 100%);
-      color:var(--c-text); line-height:1.6;
-      display:flex; flex-direction:column; min-height:100vh;
+      color:var(--c-text); 
+      line-height:1.6;
+      display:flex; 
+      flex-direction:column; 
+      min-height:100vh;
       font-size:16px;
       position: relative;
       overflow-x: hidden;
+      transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     /* Partículas flotantes */
@@ -96,12 +109,27 @@
       }
     }
     
-    a{color:var(--c-primary); text-decoration:none; transition:var(--transition)}
-    a:hover{color:var(--c-primary-dark);}
+    a{
+      color:var(--c-primary); 
+      text-decoration:none; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    
+    a:hover{
+      color:var(--c-primary-dark);
+      transform: translateY(-1px);
+    }
+    
+    a:active {
+      transform: translateY(0);
+    }
+    
     a:focus-visible {
       outline: 2px solid var(--c-primary);
       outline-offset: 2px;
       border-radius: 4px;
+      transition: outline-offset 0.2s ease;
     }
 
     /* ---------  CONTENEDOR  --------- */
@@ -123,9 +151,15 @@
       backdrop-filter: blur(10px);
       padding: 0.75rem 0;
       border-bottom: 1px solid var(--c-border);
-      transition: var(--transition);
-      position: relative;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: sticky;
+      top: 0;
       z-index: 100;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .top-bar:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     
     .top-bar-container {
@@ -140,12 +174,16 @@
       width: auto;
       filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3));
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .navbar-logo:hover {
-      transform: scale(1.05);
+      transform: scale(1.05) rotate(2deg);
       filter: drop-shadow(0 4px 12px rgba(59, 130, 246, 0.5));
+    }
+    
+    .navbar-logo:active {
+      transform: scale(1.02);
     }
     
     .navbar-title {
@@ -205,7 +243,7 @@
       padding: 0.5rem 0.75rem;
       font-size: 0.875rem;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -217,12 +255,19 @@
     
     .language-select:hover {
       border-color: var(--c-primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     
     .language-select:focus {
       outline: none;
       border-color: var(--c-primary);
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    .language-select:active {
+      transform: translateY(0);
     }
 
     /* Toggle de tema */
@@ -250,8 +295,13 @@
       border: 1px solid var(--c-border);
       border-radius: 13px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       padding: 3px;
+    }
+    
+    .theme-toggle-track:hover {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
     }
     
     .theme-toggle-indicator {
@@ -262,7 +312,7 @@
       height: 20px;
       background-color: var(--c-primary);
       border-radius: 50%;
-      transition: var(--transition);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -508,24 +558,50 @@
       padding: 2rem 0;
       text-align: center;
       position: relative;
+      transition: all 0.3s ease;
     }
+    
     .page-title {
       text-align: center;
       margin-bottom: 3.5rem;
+      animation: fadeInDown 0.6s ease-out;
     }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
     .page-title h1 {
       background: linear-gradient(135deg, var(--c-text) 0%, var(--c-primary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       font-size: 2.5rem;
+      transition: all 0.3s ease;
     }
+    
+    .page-title h1:hover {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
     .page-title small {
       display: block;
       font-weight: normal;
       color: var(--c-muted);
       font-size: 1.2rem;
       margin-top: .5rem;
+      transition: color 0.3s ease;
     }
 
     /* ---------  CUADRÍCULA DE TARJETAS  --------- */
@@ -543,7 +619,7 @@
       text-align:center;
       padding:2rem 1.5rem;
       border: 1px solid var(--c-border);
-      transition:var(--transition);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -554,6 +630,7 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
+    
     .card::before {
       content: "";
       position: absolute;
@@ -562,8 +639,9 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-      transition: var(--transition);
+      transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    
     .card::after {
       content: "";
       position: absolute;
@@ -573,22 +651,27 @@
       height: 3px;
       background: linear-gradient(90deg, var(--c-primary), var(--c-primary-dark));
       transform: scaleX(0);
-      transition: var(--transition);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       transform-origin: center;
     }
+    
     .card:hover{
-      transform:translateY(-8px); 
-      box-shadow:var(--shadow);
+      transform:translateY(-8px) scale(1.02); 
+      box-shadow:0 20px 40px -10px rgba(59, 130, 246, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
       border-color: var(--c-primary);
     }
+    
     .card:hover::before {
       left: 100%;
     }
+    
     .card:hover::after {
       transform: scaleX(1);
     }
+    
     .card:active {
-      transform: translateY(-4px);
+      transform: translateY(-4px) scale(1.01);
+      transition: all 0.1s ease;
     }
     .card small{
       font-size:.95rem; 
@@ -619,25 +702,33 @@
       align-items:center; 
       margin:1.5rem 0 2.5rem; 
       color: var(--c-muted);
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       padding: .75rem 1rem;
       border-radius: var(--radius);
       border: 1px solid var(--c-border);
       background: var(--c-card-bg);
       backdrop-filter: blur(10px);
     }
+    
     .back:hover {
       color: var(--c-primary-dark);
       background: var(--c-primary-light);
       border-color: var(--c-primary);
       transform: translateX(-4px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
+    
+    .back:active {
+      transform: translateX(-2px);
+    }
+    
     .back svg {
       margin-right: .5rem;
-      transition: transform 0.2s;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    
     .back:hover svg {
-      transform: translateX(-2px);
+      transform: translateX(-4px);
     }
     
     .list-links{
@@ -654,25 +745,32 @@
       border-radius: var(--radius);
       background: var(--c-primary-light);
       backdrop-filter: blur(10px);
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--c-text);
       border: 1px solid var(--c-border);
     }
+    
     .pdf-link:hover{
       background: var(--c-card-bg);
       color: var(--c-primary);
       border-color: var(--c-primary);
-      transform: translateY(-3px);
-      box-shadow: var(--card-shadow);
+      transform: translateY(-3px) translateX(4px);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
+    
+    .pdf-link:active {
+      transform: translateY(-1px) translateX(2px);
+    }
+    
     .pdf-link img{
       width:24px; 
       opacity:.8;
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    
     .pdf-link:hover img {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1.2) rotate(5deg);
     }
 
     /* ---------  FOOTER  --------- */
@@ -685,6 +783,19 @@
       border-top: 1px solid var(--c-border);
       background: rgba(15, 23, 42, 0.3);
       backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    footer:hover {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    
+    footer a {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    footer a:hover {
+      transform: translateY(-2px) scale(1.05);
     }
 
     .dark-mode footer {
@@ -713,22 +824,25 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       padding: 1rem;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .modal-overlay.open {
       opacity: 1;
       visibility: visible;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
     }
     
     .modal {
@@ -741,13 +855,15 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
+      transform: translateY(30px) scale(0.95);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid var(--c-border);
     }
     
     .modal-overlay.open .modal {
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+      opacity: 1;
     }
     
     .modal-header {
@@ -757,6 +873,19 @@
       padding: 1.5rem;
       border-bottom: 1px solid var(--c-border);
       background: var(--c-surface);
+    }
+    
+    .modal-header button {
+      transition: all 0.2s ease;
+    }
+    
+    .modal-header button:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: rotate(90deg);
+    }
+    
+    .modal-header button:active {
+      transform: rotate(90deg) scale(0.9);
     }
     
     .modal-title {
@@ -795,12 +924,30 @@
       background: var(--c-primary-light);
       border-radius: 8px;
       border: 1px solid var(--c-border);
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.4s ease forwards;
     }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .doc-item:nth-child(1) { animation-delay: 0.05s; }
+    .doc-item:nth-child(2) { animation-delay: 0.1s; }
+    .doc-item:nth-child(3) { animation-delay: 0.15s; }
+    .doc-item:nth-child(4) { animation-delay: 0.2s; }
+    .doc-item:nth-child(5) { animation-delay: 0.25s; }
     
     .doc-item:hover {
       background: var(--c-card-bg);
       border-color: var(--c-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     }
     
     .doc-item a {
@@ -809,13 +956,181 @@
       padding: 0.5rem 1rem;
       border-radius: 6px;
       font-size: 0.875rem;
-      transition: var(--transition);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
     }
     
     .doc-item a:hover {
       background: var(--c-primary-dark);
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .doc-item a:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Estilos para acordeón */
+    .accordion-section {
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.4s ease forwards;
+    }
+    
+    .accordion-section:nth-child(1) { animation-delay: 0.1s; }
+    .accordion-section:nth-child(2) { animation-delay: 0.2s; }
+    .accordion-section:nth-child(3) { animation-delay: 0.3s; }
+    
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: var(--c-surface);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      position: relative;
+    }
+    
+    .accordion-header::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: var(--c-primary);
+      transform: scaleY(0);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .accordion-header:hover::before {
+      transform: scaleY(1);
+    }
+    
+    .accordion-header:hover {
+      background: rgba(59, 130, 246, 0.1);
+      padding-left: 1.5rem;
+    }
+    
+    .accordion-header.active {
+      background: rgba(59, 130, 246, 0.15);
+      border-bottom: 1px solid var(--c-border);
+      padding-left: 1.5rem;
+    }
+    
+    .accordion-header.active::before {
+      transform: scaleY(1);
+    }
+    
+    .accordion-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--c-text);
+      transition: color 0.2s ease;
+    }
+    
+    .accordion-header:hover .accordion-title {
+      color: var(--c-primary);
+    }
+    
+    .accordion-icon {
+      width: 20px;
+      height: 20px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--c-primary);
+    }
+    
+    .accordion-header:hover .accordion-icon {
+      transform: scale(1.1);
+    }
+    
+    .accordion-header.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--c-card-bg);
+      opacity: 0;
+    }
+    
+    .accordion-content.active {
+      max-height: 2000px;
+      opacity: 1;
+    }
+    
+    .accordion-inner {
+      padding: 1.25rem;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .subsection {
+      margin-bottom: 1.5rem;
+      padding-left: 0.5rem;
+      border-left: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .subsection:hover {
+      border-left-color: var(--c-primary);
+      padding-left: 1rem;
+    }
+    
+    .subsection:last-child {
+      margin-bottom: 0;
+    }
+    
+    .subsection-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--c-primary);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .subsection-title::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--c-primary);
+      transition: width 0.3s ease;
+    }
+    
+    .subsection:hover .subsection-title::after {
+      width: 100%;
+    }
+    
+    .subsection-docs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
     
     /* Responsive */
@@ -1794,6 +2109,11 @@
       document.querySelector('.theme-toggle').setAttribute('aria-label', translations[lang]['theme-toggle-label']);
       document.querySelector('.language-select').setAttribute('aria-label', translations[lang]['language-select-label']);
       
+      // Si hay un modal abierto, actualizarlo
+      if (currentModalKey && lastCard) {
+        openModal(currentModalKey, lastCard);
+      }
+      
       // Guardar preferencia
       localStorage.setItem('language', lang);
     }
@@ -1857,20 +2177,100 @@
         detalle2: [
           { title_es: 'Aclaración de Acuerdos y Otros Actos', title_en: 'Clarification of Agreements and Other Acts', url: 'assets/documentos-subidos/actas-resoluciones/aclaracion_acuerdos_otros_actos.pdf' },
           { title_es: 'Resumen General de Accionistas 1', title_en: 'General Shareholders Summary 1', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_1.pdf' },
-          { title_es: 'Resumen General de Accionistas 2', title_en: 'General Shareholders Summary 2', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_2.pdf' }
+          { title_es: 'Resumen General de Accionistas 2', title_en: 'General Shareholders Summary 2', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_2.pdf' },
+           { title_es: 'Resumen General de Accionistas 3', title_en: 'General Shareholders Summary 3', url: 'assets/documentos-subidos/actas-resoluciones/resumen_general_accionistas_3.pdf' },
 
         ],
-        detalle3: [
-          { title_es: 'Estados Financieros UNID', title_en: 'Financial Statements', url: 'assets/documentos-subidos/inf-financiera/estados_financieros_unid.pdf' },
-          { title_es: 'Plan de Inversiones', title_en: 'Investments Plan', url: 'assets/documentos-subidos/inf-financiera/plan_inversion.pdf' }
+        detalle3: {
+          type: 'accordion',
+          standalone_docs: [
+            { title_es: 'Plan de Inversión', title_en: 'Investment Plan', url: 'assets/documentos-subidos/inf-financiera/plan_inversion.pdf' },
+            { title_es: 'Presupuesto Institucional', title_en: 'Institutional Budget', url: 'assets/documentos-subidos/inf-financiera/presupuesto_institucional.pdf' }
 
-        ],
+          ],
+     
+          sections: [
+            
+            {
+              title_es: 'VIGENTE',
+              title_en: 'CURRENT',
+              subsections: [
+                {
+                  title_es: 'Estados Financieros Auditados',
+                  title_en: 'Audited Financial Statements',
+                  docs: [
+                    { title_es: 'Estados Financieros 2024', title_en: 'UNID Financial Statements 2024', url: 'assets/documentos-subidos/inf-financiera/vigente/estados_financieros_2024.pdf' },
+                  ]
+                },
+              ]
+            },
+            {
+              title_es: 'HISTÓRICO',
+              title_en: 'HISTORICAL',
+              subsections: [
+                {
+                  title_es: 'Estados Financieros Anteriores',
+                  title_en: 'Previous Financial Statements',
+                  docs: [
+                    { title_es: 'Estados Financieros 2023', title_en: 'Financial Statements 2023', url: 'assets/documentos-subidos/inf-financiera/historico/estados_financieros_2023.pdf' },
+                    { title_es: 'Estados Financieros 2022', title_en: 'Financial Statements 2022', url: 'assets/documentos-subidos/inf-financiera/historico/estados_financieros_2022.pdf' },
+                  ]
+                },
+              ]
+            }
+          ]
+        },
         detalle4: [
-          { title_es: 'Reglamento del Servicio Social y Bienestar UNID', title_en: 'Regulations of the Social Service and Welfare UNID', url: 'assets/documentos-subidos/becas-creditos/servicio_social_bienestar_unid.pdf' }
+          { title_es: 'Reglamento del Servicio Social y Bienestar', title_en: 'Regulations of the Social Service and Welfare UNID', url: 'assets/documentos-subidos/becas-creditos/servicio_social_bienestar_unid.pdf' }
         ],
-        detalle5: [
-          { title_es: 'Lineas de Investigación', title_en: 'Research Lines', url: 'assets/documentos-subidos/investigacion/lineas_investigacion.pdf' }
-        ],
+        detalle5: {
+          type: 'accordion',
+          sections: [
+            {
+              title_es: 'VIGENTE',
+              title_en: 'CURRENT',
+              subsections: [
+                {
+                  title_es: 'Líneas de Investigación',
+                  title_en: 'Investigation Lines',
+                  docs: [
+                    { title_es: 'Líneas de Investigación 2025', title_en: 'Research Lines 2025', url: 'assets/documentos-subidos/investigacion/vigente/lineas_investigacion_2025.pdf' },
+                  ]
+                },
+                {
+                  title_es: 'Políticas y Reglamentos',
+                  title_en: 'Policies and Regulations',
+                  docs: [
+                    { title_es: 'Política General de Investigación 2025', title_en: 'General Research Policy 2025', url: 'assets/documentos-subidos/investigacion/vigente/politica_general_investigacion_2025.pdf' },
+                    { title_es: 'Reglamento General de Investigación 2025', title_en: 'General Research Regulation 2025', url: 'assets/documentos-subidos/investigacion/vigente/reglamento_general_investigacion_2025.pdf' }
+                  ]
+                }
+              ]
+            },
+            {
+              title_es: 'HISTÓRICO',
+              title_en: 'HISTORICAL',
+              subsections: [
+                {
+                  title_es: 'Proyectos Anteriores',
+                  title_en: 'Previous Projects',
+                  docs: [
+                    { title_es: 'Líneas de Investigación 2023', title_en: 'Research Lines 2023', url: 'assets/documentos-subidos/investigacion/historico/lineas_investigacion_2023.pdf' },
+                    { title_es: 'Líneas de Investigación 2022', title_en: 'Research Lines 2022', url: 'assets/documentos-subidos/investigacion/historico/lineas_investigacion_2022.pdf' }
+                  ]
+                },
+                {
+                  title_es: 'Publicaciones Anteriores',
+                  title_en: 'Previous Publications',
+                  docs: [
+                    { title_es: 'Publicaciones Científicas 2023', title_en: 'Scientific Publications 2023', url: 'assets/documentos-subidos/investigacion/historico/publicaciones_2023.pdf' },
+                    { title_es: 'Publicaciones Científicas 2022', title_en: 'Scientific Publications 2022', url: 'assets/documentos-subidos/investigacion/historico/publicaciones_2022.pdf' }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
         detalle6: [
           { title_es: 'Plan de Estudio de la Carrera Profesional de Enfermería', title_en: 'Nursing Curriculum Plan', url: 'assets/documentos-subidos/plan-estudios/plan_enfermeria.pdf' },
           { title_es: 'Plan de Estudio de la Carrera Profesional de Farmacia y Bioquímica', title_en: 'Pharmacy and Biochemistry Curriculum Plan', url: 'assets/documentos-subidos/plan-estudios/plan_farmacia_bioquimica.pdf' },
@@ -1880,13 +2280,18 @@
           { title_es: 'Reglamento de Admisión', title_en: 'Admission Regulations', url: 'assets/documentos-subidos/admision/reglamento_admision.pdf' },
         ],
         detalle8: [
-          { title_es: 'Designación Docente', title_en: 'Faculty Appointment', url: 'assets/documentos-subidos/plana-docente/designacion_docente.pdf' },
-          { title_es: 'CV Docentes', title_en: 'Faculty CV', url: 'assets/documentos-subidos/plana-docente/cv_docentes.pdf' }
-
+          { title_es: 'Designación Docente', title_en: 'Faculty Appointment', url: 'assets/documentos-subidos/plana-docente/designacion_docente_primero_segundo_anio.pdf' },
+          { title_es: 'CV Docentes', title_en: 'Faculty CV', url: 'assets/documentos-subidos/plana-docente/cv_docentes.pdf' },
+          { title_es: 'Listado de Docentes por Carrera', title_en: 'Faculty List by Career', url: 'assets/documentos-subidos/plana-docente/listado_docentes_x_carrera.pdf' },
+          { title_es: 'Listado de Docentes UNID', title_en: 'Faculty List UNID', url: 'assets/documentos-subidos/plana-docente/listado_docentes_universidad.pdf' },
+          { title_es: 'Escala Salarial', title_en: 'Salary Scale', url: 'assets/documentos-subidos/plana-docente/escala_salarial.pdf' }
         ],
         detalle9: [
-          { title_es: 'Reglamento del Programa de Inserción Laboral y Seguimiento al Egresado', title_en: 'Regulations of the Graduate Employment and Follow-up Program', url: 'assets/documentos-subidos/norm-interna/insercion_laboral_seguimiento_egresado.pdf' },
-          { title_es: 'Texto Único de Procedimientos Administrativos (TUPA)', title_en: 'Single Text of Administrative Procedures', url: 'assets/documentos-subidos/norm-interna/texto_unico_procedimientos_administrativos.pdf' }
+          { title_es: 'Reglamento del Programa de Inserción Laboral y Seguimiento al Egresado', title_en: 'Regulations of the Graduate Employment and Follow-up Program', url: 'assets/documentos-subidos/norm-interna/reglamento_insercion_laboral_seguimiento_egresado.pdf' },
+          { title_es: 'Texto Único de Procedimientos Administrativos (TUPA)', title_en: 'Single Text of Administrative Procedures', url: 'assets/documentos-subidos/norm-interna/texto_unico_procedimientos_administrativos.pdf' },
+          { title_es: 'Código de Ética Institucional', title_en: 'Institutional Code of Ethics', url: 'assets/documentos-subidos/norm-interna/codigo_etica_institucional.pdf' },
+          { title_es: 'Reglamento Académico General', title_en: 'General Academic Regulations', url: 'assets/documentos-subidos/norm-interna/reglamento_academico_general.pdf' },
+          { title_es: 'Reglamento de Grados y Títulos', title_en: 'Regulations on Degrees and Titles', url: 'assets/documentos-subidos/norm-interna/reglamento_grados_titulos.pdf' }
 
         ]
       };
@@ -1921,37 +2326,158 @@
 
         // Primero intentar manifest en assets/{key}/manifest.json
         const manifest = await fetchManifest(key);
-        const docs = manifest || docsMap[key] || [];
+        const data = manifest || docsMap[key];
 
-        if (docs.length === 0) {
-          const el = document.createElement('div');
-          el.className = 'doc-item';
-          el.textContent = currentLanguage === 'es' ? 'No hay documentos disponibles.' : 'No documents available.';
-          modalDocs.appendChild(el);
-        } else {
-          docs.forEach(doc => {
-            const item = document.createElement('div');
-            item.className = 'doc-item';
+        // Verificar si es tipo acordeón
+        if (data && data.type === 'accordion') {
+          // Renderizar documentos independientes primero (si existen)
+          if (data.standalone_docs && data.standalone_docs.length > 0) {
+            data.standalone_docs.forEach(doc => {
+              const item = document.createElement('div');
+              item.className = 'doc-item';
+              item.style.marginBottom = '1.5rem';
 
-            const name = document.createElement('div');
-            name.style.flex = '1';
-            // si manifest viene con title_es/title_en o con title (genérico)
-            const title_es = doc.title_es || doc.title;
-            const title_en = doc.title_en || doc.title;
-            name.textContent = currentLanguage === 'es' ? (title_es || doc.url) : (title_en || doc.url);
+              const name = document.createElement('div');
+              name.style.flex = '1';
+              name.textContent = currentLanguage === 'es' ? doc.title_es : doc.title_en;
 
-            const link = document.createElement('a');
-            // si manifest proporciona url relativa, la usamos; sino asumimos assets/{key}/{archivo}
-            const url = doc.url || `assets/${key}/${encodeURIComponent((title_es || title_en || 'documento') + '.pdf')}`;
-            link.href = url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = currentLanguage === 'es' ? 'Ver / Descargar' : 'View / Download';
+              const link = document.createElement('a');
+              link.href = doc.url;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.textContent = currentLanguage === 'es' ? 'Ver / Descargar' : 'View / Download';
 
-            item.appendChild(name);
-            item.appendChild(link);
-            modalDocs.appendChild(item);
+              item.appendChild(name);
+              item.appendChild(link);
+              modalDocs.appendChild(item);
+            });
+          }
+          
+          // Título "ESTADOS FINANCIEROS UNID" solo para el modal de Información Financiera (detalle3)
+          if (key === 'detalle3') {
+            const sectionTitle = document.createElement('div');
+            sectionTitle.style.cssText = 'font-size: 1.1rem; font-weight: 600; color: var(--c-text); margin: 1.5rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid var(--c-primary);';
+            sectionTitle.textContent = currentLanguage === 'es' ? 'ESTADOS FINANCIEROS UNID' : 'UNID FINANCIAL STATEMENTS';
+            modalDocs.appendChild(sectionTitle);
+          }
+          
+          // Renderizar acordeones
+          if (data.sections) {
+          // Renderizar acordeón
+          data.sections.forEach((section, sectionIndex) => {
+            const accordionSection = document.createElement('div');
+            accordionSection.className = 'accordion-section';
+
+            // Header del acordeón
+            const accordionHeader = document.createElement('div');
+            accordionHeader.className = 'accordion-header';
+            
+            const accordionTitle = document.createElement('div');
+            accordionTitle.className = 'accordion-title';
+            accordionTitle.textContent = currentLanguage === 'es' ? section.title_es : section.title_en;
+            
+            const accordionIconContainer = document.createElement('div');
+            accordionIconContainer.className = 'accordion-icon';
+            accordionIconContainer.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>';
+            
+            accordionHeader.appendChild(accordionTitle);
+            accordionHeader.appendChild(accordionIconContainer);
+            
+            // Content del acordeón
+            const accordionContent = document.createElement('div');
+            accordionContent.className = 'accordion-content';
+            
+            const accordionInner = document.createElement('div');
+            accordionInner.className = 'accordion-inner';
+            
+            // Subsecciones
+            if (section.subsections && section.subsections.length > 0) {
+              section.subsections.forEach(subsection => {
+                const subsectionDiv = document.createElement('div');
+                subsectionDiv.className = 'subsection';
+                
+                const subsectionTitle = document.createElement('div');
+                subsectionTitle.className = 'subsection-title';
+                subsectionTitle.textContent = currentLanguage === 'es' ? subsection.title_es : subsection.title_en;
+                
+                const subsectionDocs = document.createElement('div');
+                subsectionDocs.className = 'subsection-docs';
+                
+                // Documentos de la subsección
+                if (subsection.docs && subsection.docs.length > 0) {
+                  subsection.docs.forEach(doc => {
+                    const docItem = document.createElement('div');
+                    docItem.className = 'doc-item';
+                    
+                    const docName = document.createElement('div');
+                    docName.style.flex = '1';
+                    docName.textContent = currentLanguage === 'es' ? doc.title_es : doc.title_en;
+                    
+                    const docLink = document.createElement('a');
+                    docLink.href = doc.url;
+                    docLink.target = '_blank';
+                    docLink.rel = 'noopener noreferrer';
+                    docLink.textContent = currentLanguage === 'es' ? 'Ver / Descargar' : 'View / Download';
+                    
+                    docItem.appendChild(docName);
+                    docItem.appendChild(docLink);
+                    subsectionDocs.appendChild(docItem);
+                  });
+                }
+                
+                subsectionDiv.appendChild(subsectionTitle);
+                subsectionDiv.appendChild(subsectionDocs);
+                accordionInner.appendChild(subsectionDiv);
+              });
+            }
+            
+            accordionContent.appendChild(accordionInner);
+            accordionSection.appendChild(accordionHeader);
+            accordionSection.appendChild(accordionContent);
+            
+            // Event listener para toggle
+            accordionHeader.addEventListener('click', () => {
+              accordionHeader.classList.toggle('active');
+              accordionContent.classList.toggle('active');
+            });
+            
+            modalDocs.appendChild(accordionSection);
           });
+          }
+        } else {
+          // Renderizado normal (lista plana)
+          const docs = Array.isArray(data) ? data : [];
+          
+          if (docs.length === 0) {
+            const el = document.createElement('div');
+            el.className = 'doc-item';
+            el.textContent = currentLanguage === 'es' ? 'No hay documentos disponibles.' : 'No documents available.';
+            modalDocs.appendChild(el);
+          } else {
+            docs.forEach(doc => {
+              const item = document.createElement('div');
+              item.className = 'doc-item';
+
+              const name = document.createElement('div');
+              name.style.flex = '1';
+              // si manifest viene con title_es/title_en o con title (genérico)
+              const title_es = doc.title_es || doc.title;
+              const title_en = doc.title_en || doc.title;
+              name.textContent = currentLanguage === 'es' ? (title_es || doc.url) : (title_en || doc.url);
+
+              const link = document.createElement('a');
+              // si manifest proporciona url relativa, la usamos; sino asumimos assets/{key}/{archivo}
+              const url = doc.url || `assets/${key}/${encodeURIComponent((title_es || title_en || 'documento') + '.pdf')}`;
+              link.href = url;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.textContent = currentLanguage === 'es' ? 'Ver / Descargar' : 'View / Download';
+
+              item.appendChild(name);
+              item.appendChild(link);
+              modalDocs.appendChild(item);
+            });
+          }
         }
 
         modalOverlay.classList.remove('hidden');
